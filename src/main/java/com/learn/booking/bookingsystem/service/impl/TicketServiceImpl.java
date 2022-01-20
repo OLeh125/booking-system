@@ -4,6 +4,7 @@ import com.learn.booking.bookingsystem.controller.model.ticket.request.CreateTic
 import com.learn.booking.bookingsystem.controller.model.ticket.request.UpdateTicketRequest;
 import com.learn.booking.bookingsystem.controller.model.ticket.response.TicketResponse;
 import com.learn.booking.bookingsystem.db.model.Ticket;
+import com.learn.booking.bookingsystem.db.repository.EventRepository;
 import com.learn.booking.bookingsystem.db.repository.TicketRepository;
 import com.learn.booking.bookingsystem.exception.NotFoundException;
 import com.learn.booking.bookingsystem.service.PatchHandler;
@@ -22,11 +23,26 @@ public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
     private final TicketMapper ticketMapper;
     private final PatchHandler patchHandler;
+    private final EventRepository eventRepository;
 
     @Override
     public TicketResponse createTicket(CreateTicketRequest ticketRequest) {
         return ticketMapper.ticketToTicketResponse(ticketRepository
-            .save(ticketMapper.createTicketRequestToTicket(ticketRequest)));
+            .save(createTicketRequestToTicket(ticketRequest)));
+    }
+
+    public Ticket createTicketRequestToTicket(CreateTicketRequest ticketRequest){
+        return Ticket.builder()
+            .id(ticketRequest.getId())
+            .uuid(ticketRequest.getUuid())
+            .number(ticketRequest.getNumber())
+            .additionalInformation(ticketRequest.getAdditionalInformation())
+            .status(ticketRequest.getStatus())
+            .seat(ticketRequest.getSeat())
+            .price(ticketRequest.getPrice())
+            .event(eventRepository.getByUuid(ticketRequest.getUuid())
+                .orElseThrow(() -> new NotFoundException("Event is not found")))
+            .build();
     }
 
     @Override

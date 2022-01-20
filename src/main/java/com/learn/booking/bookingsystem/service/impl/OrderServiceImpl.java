@@ -5,10 +5,13 @@ import com.learn.booking.bookingsystem.controller.model.order.request.UpdateOrde
 import com.learn.booking.bookingsystem.controller.model.order.response.OrderResponse;
 import com.learn.booking.bookingsystem.db.model.Order;
 import com.learn.booking.bookingsystem.db.repository.OrderRepository;
+import com.learn.booking.bookingsystem.db.repository.TicketRepository;
+import com.learn.booking.bookingsystem.db.repository.UserRepository;
 import com.learn.booking.bookingsystem.exception.NotFoundException;
 import com.learn.booking.bookingsystem.service.OrderService;
 import com.learn.booking.bookingsystem.service.PatchHandler;
 import com.learn.booking.bookingsystem.service.mapper.OrderMapper;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,13 +27,26 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final PatchHandler patchHandler;
+    private final UserRepository userRepository;
+    private final TicketRepository ticketRepository;
 
     @Override
     public OrderResponse createOrder(CreateOrderRequest order) {
         //TODO how to avoid multiple insert for orders_tickets? How to do it in batch?
         //TODO clarify if really SEQUENCE needed for batch save
+
         return orderMapper.orderToOrderResponse(orderRepository
-            .save(orderMapper.createOrderRequestToOrder(order)));
+            .save(createOrderRequestToOrder(order)));
+    }
+
+    public Order createOrderRequestToOrder(CreateOrderRequest orderRequest){
+        return Order.builder()
+            .uuid(UUID.randomUUID())
+            .createdAt(LocalDateTime.now())
+            .client(userRepository.getByUuid(orderRequest.getClientUuid())
+                .orElseThrow(() -> new NotFoundException("User is not found")))
+            .tickets(ticketRepository.getAllByUuid(orderRequest.getTicketsUuids()))
+            .build();
     }
 
     @Override

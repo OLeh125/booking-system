@@ -15,7 +15,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Transactional(readOnly = true)
     Optional<Order> getByUuid(UUID uuid);
 
-    @Query("select o from Order o JOIN fetch o.client JOIN fetch o.tickets where o.uuid in (:uuid)")
+    @Query("select o from Order o JOIN fetch o.client JOIN fetch o.tickets where o.uuid in (:uuids)")
     @Transactional(readOnly = true)
     List<Order> findAllByUuid(List<UUID> uuids);
 

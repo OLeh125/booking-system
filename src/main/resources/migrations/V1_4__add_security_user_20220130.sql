@@ -1,0 +1,1 @@
+INSERT INTO security_users(id, username, password) VALUES (1, 'oleh.artymiak@gmail.com', '$2a$12$jUrkArykodk5X5F..e.WW.NleLYgxgm0RPMUxNijpG0yhtwCNxSJu')

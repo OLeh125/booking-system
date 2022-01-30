@@ -32,7 +32,7 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seqGen")
     @SequenceGenerator(name = "seqGen", sequenceName = "ticket_id_seq", allocationSize = 1)
-    private Integer id;
+    private Long id;
     private UUID uuid;
     private Integer number;
     @Column(name = "additional_inf")

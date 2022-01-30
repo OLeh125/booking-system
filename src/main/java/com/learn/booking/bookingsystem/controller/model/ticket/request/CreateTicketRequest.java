@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class CreateTicketRequest {
 
-    private Integer id;
+    private Long id;
     private UUID uuid;
     private Integer number;
     private String additionalInformation;

@@ -41,4 +41,6 @@ public class User {
     private UserStatus status = UserStatus.ACTIVE;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private Set<Order> orders;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    private Set<Account> accounts;
 }

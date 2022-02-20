@@ -12,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -29,10 +29,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Ticket {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seqGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqGen")
     @SequenceGenerator(name = "seqGen", sequenceName = "ticket_id_seq", allocationSize = 1)
-    private Long id;
+    private Integer id;
     private UUID uuid;
     private Integer number;
     @Column(name = "additional_inf")
@@ -41,7 +42,7 @@ public class Ticket {
     private TicketStatus status;
     private String seat;
     private BigDecimal price;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "event_id")
     private Event event;
 

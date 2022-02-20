@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 //TODO https://stackoverflow.com/questions/3274958/question-about-hibernate-session-flush
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @Query("select u from User u join fetch u.orders o where u.email = :email")
+    @Query("select u from User u where u.email = :email")
     @Transactional(readOnly = true)
     Optional<User> getByEmail(String email);
 
-    @Query("select u from User u join fetch u.orders o where u.uuid = :uuid")
+    @Query("select u from User u where u.uuid = :uuid")
     @Transactional(readOnly = true)
     Optional<User> getByUuid(UUID uuid);
 
@@ -26,6 +27,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Transactional(readOnly = true)
     List<User> getAllByUuid(List<UUID> uuids);
 
+    @Modifying
+    @Query("delete from User u where u.uuid = :uuid")
     void deleteByUuid(UUID uuid);
 
 }

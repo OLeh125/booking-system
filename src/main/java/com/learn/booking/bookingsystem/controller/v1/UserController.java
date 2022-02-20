@@ -3,6 +3,7 @@ package com.learn.booking.bookingsystem.controller.v1;
 import com.learn.booking.bookingsystem.controller.model.users.request.CreateUserRequest;
 import com.learn.booking.bookingsystem.controller.model.users.request.UpdateUserRequest;
 import com.learn.booking.bookingsystem.controller.model.users.response.UserResponse;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +18,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/v1/users/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class UserController {
 
@@ -31,6 +33,12 @@ public class UserController {
     @PreAuthorize("hasAuthority('read')")
     public ResponseEntity<UserResponse> getUser(@PathVariable UUID userUuid){
         return new ResponseEntity<>(UserService.getUser(userUuid), HttpStatus.OK);
+    }
+
+    @GetMapping()
+    @PreAuthorize("hasAuthority('read')")
+    public ResponseEntity<List<UserResponse>> getUsers(@RequestParam List<UUID> uuids){
+        return new ResponseEntity<>(UserService.getUsersWithAccounts(uuids), HttpStatus.OK);
     }
 
     @PostMapping

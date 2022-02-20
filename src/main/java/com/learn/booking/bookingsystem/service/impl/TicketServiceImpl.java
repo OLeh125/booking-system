@@ -15,9 +15,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
@@ -64,12 +66,14 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TicketResponse getTicket(UUID uuid) {
         return ticketMapper.ticketToTicketResponse(ticketRepository.getByUuid(uuid)
             .orElseThrow(() -> new NotFoundException("Ticket is not found")));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TicketResponse> getTickets(List<UUID> uuids) {
         return ticketRepository.getAllByUuid(uuids).stream()
             .map(t -> ticketMapper.ticketToTicketResponse(t)).collect(Collectors.toList());

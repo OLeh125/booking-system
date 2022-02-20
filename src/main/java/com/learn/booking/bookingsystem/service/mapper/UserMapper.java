@@ -3,10 +3,14 @@ package com.learn.booking.bookingsystem.service.mapper;
 import com.learn.booking.bookingsystem.controller.model.users.request.CreateUserRequest;
 import com.learn.booking.bookingsystem.controller.model.users.response.UserResponse;
 import com.learn.booking.bookingsystem.db.model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserMapper {
+
+    private final AccountMapper accountMapper;
 
     public UserResponse userToUserResponse(User user){
         return UserResponse.builder()
@@ -17,6 +21,7 @@ public class UserMapper {
             .email(user.getEmail())
             .password(user.getPassword())
             .status(user.getStatus())
+            .accounts(accountMapper.accountsToAccountsResponses(user.getAccounts()))
             .build();
     }
 

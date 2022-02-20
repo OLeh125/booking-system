@@ -1,6 +1,7 @@
 package com.learn.booking.bookingsystem.controller.model.users.response;
 
 import com.learn.booking.bookingsystem.enums.UserStatus;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +21,7 @@ public class UserResponse {
     private String email;
     private String password;
     private UserStatus status;
+    private Set<AccountResponse> accounts;
+
 
 }

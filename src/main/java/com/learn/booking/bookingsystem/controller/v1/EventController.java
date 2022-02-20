@@ -6,6 +6,7 @@ import com.learn.booking.bookingsystem.controller.model.event.response.EventResp
 import com.learn.booking.bookingsystem.controller.model.order.response.OrderResponse;
 import com.learn.booking.bookingsystem.service.EventService;
 import java.util.UUID;
+import javax.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/v1/events/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/events", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class EventController {
 

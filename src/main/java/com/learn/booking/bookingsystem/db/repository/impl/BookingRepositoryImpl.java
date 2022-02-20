@@ -14,13 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @RequiredArgsConstructor
+@Transactional
 public class BookingRepositoryImpl implements BookingRepository {
 
     @PersistenceContext
     private final EntityManager entityManager;
 
     @Override
-    @Transactional
     public List<Ticket> bookTickets(Long number, UUID eventUuid) {
         List<Ticket> ticketsResult = ((Session) entityManager.getDelegate())
             .createNativeQuery(
@@ -30,10 +30,8 @@ public class BookingRepositoryImpl implements BookingRepository {
             .getResultList();
         List<Ticket> tickets = ((Session) entityManager.getDelegate())
             .createNativeQuery(
-                "UPDATE tickets SET status = 'RESERVED' WHERE uuid IN (:uuids) RETURNING *",
-                Ticket.class)
-            .setParameter("uuids",
-                ticketsResult.stream().map(Ticket::getUuid).collect(Collectors.toList()))
+                "UPDATE tickets SET status = 'RESERVED' WHERE uuid IN (:uuids) RETURNING *", Ticket.class)
+            .setParameter("uuids", ticketsResult.stream().map(Ticket::getUuid).collect(Collectors.toList()))
             .getResultList();
         return tickets;
     }

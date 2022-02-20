@@ -22,34 +22,34 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/v1/tickets/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/tickets", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class TicketController {
 
-    private final TicketService TicketService;
+    private final TicketService ticketService;
 
     @GetMapping("/{ticketUuid}")
     @PreAuthorize("hasAuthority('read')")
     public ResponseEntity<TicketResponse> getTicket(@PathVariable UUID ticketUuid){
-        return new ResponseEntity<>(TicketService.getTicket(ticketUuid), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getTicket(ticketUuid), HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TicketResponse> createTicket(@RequestBody CreateTicketRequest ticketRequest){
-        return new ResponseEntity<>(TicketService.createTicket(ticketRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(ticketService.createTicket(ticketRequest), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{ticketUuid}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TicketResponse> updateTicket(@RequestBody UpdateTicketRequest ticketRequest, @PathVariable UUID ticketUuid){
-        return new ResponseEntity<>(TicketService.updateTicket(ticketRequest, ticketUuid), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.updateTicket(ticketRequest, ticketUuid), HttpStatus.OK);
     }
 
     @DeleteMapping("/{ticketUuid}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<Void> deleteTicket(@PathVariable UUID ticketUuid){
-        TicketService.deleteTicket(ticketUuid);
+        ticketService.deleteTicket(ticketUuid);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

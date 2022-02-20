@@ -17,6 +17,6 @@ public interface UserService {
 
     UserResponse getUser(UUID uuid);
 
-    List<UserResponse> getUsers(List<UUID> uuid);
+    List<UserResponse> getUsersWithAccounts(List<UUID> uuid);
 
 }

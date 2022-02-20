@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,8 @@ public interface EventRepository extends JpaRepository<Event, Integer>, EventBoo
     @Transactional(readOnly = true)
     List<Event> findAllByUuid(List<UUID> uuids);
 
+    @Modifying
+    @Query("delete from Event e where e.uuid = :uuid")
     void deleteByUuid(UUID uuid);
 
 }

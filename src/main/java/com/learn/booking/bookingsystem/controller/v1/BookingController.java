@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/v1/booking/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/booking", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-//TODO add exception handler
-//TODO add security
 public class BookingController {
 
     private final BookingFacade bookingService;

@@ -6,8 +6,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 public class EventBookingRepositoryImpl implements EventBookingRepository {
 
     @PersistenceContext

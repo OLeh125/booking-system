@@ -34,7 +34,6 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse createOrder(CreateOrderRequest order) {
         //TODO how to avoid multiple insert for orders_tickets? How to do it in batch?
         //TODO clarify if really SEQUENCE needed for batch save
-
         return orderMapper.orderToOrderResponse(orderRepository
             .save(createOrderRequestToOrder(order)));
     }

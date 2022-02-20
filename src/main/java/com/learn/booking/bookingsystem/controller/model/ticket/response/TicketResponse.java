@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class TicketResponse {
 
-    private Long id;
+    private Integer id;
     private UUID uuid;
     private Integer number;
     private String additionalInformation;

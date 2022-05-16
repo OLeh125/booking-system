@@ -9,7 +9,24 @@ public class CurrencyMapper {
 
     public CurrencyResponse currencyToCurrencyResponse(Currency currency) {
         return CurrencyResponse.builder()
-            .id(currency.getId())
+            .uuid(currency.getUuid())
+            .name(currency.getName())
+            .shortName(currency.getShortName())
+            .exchangeRate(currency.getExchangeRate())
+            .build();
+    }
+
+    public CurrencyResponse mongoCurrencyToCurrencyResponse(com.learn.booking.bookingsystem.db.mongo.Currency currency) {
+        return CurrencyResponse.builder()
+            .uuid(currency.getUuid())
+            .name(currency.getName())
+            .shortName(currency.getShortName())
+            .exchangeRate(currency.getExchangeRate())
+            .build();
+    }
+
+    public com.learn.booking.bookingsystem.db.mongo.Currency currencyResponseToMongoCurrency(CurrencyResponse currency) {
+        return com.learn.booking.bookingsystem.db.mongo.Currency.builder()
             .uuid(currency.getUuid())
             .name(currency.getName())
             .shortName(currency.getShortName())

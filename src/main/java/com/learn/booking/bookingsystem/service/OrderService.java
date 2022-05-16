@@ -19,4 +19,6 @@ public interface OrderService {
 
     List<OrderResponse> getOrders(List<UUID> uuid);
 
+    List<OrderResponse> getAll();
+
 }

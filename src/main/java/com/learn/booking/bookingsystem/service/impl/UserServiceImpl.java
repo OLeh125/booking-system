@@ -8,6 +8,7 @@ import com.learn.booking.bookingsystem.db.model.Account;
 import com.learn.booking.bookingsystem.db.model.User;
 import com.learn.booking.bookingsystem.db.repository.AccountRepository;
 import com.learn.booking.bookingsystem.db.repository.UserRepository;
+import com.learn.booking.bookingsystem.db.repository.mongo.MongoUserRepository;
 import com.learn.booking.bookingsystem.exception.NotFoundException;
 import com.learn.booking.bookingsystem.service.PatchHandler;
 import com.learn.booking.bookingsystem.service.UserService;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final MongoUserRepository mongoUserRepository;
     private final UserMapper userMapper;
     private final PatchHandler patchHandler;
     private final AccountRepository accountRepository;
@@ -35,6 +37,12 @@ public class UserServiceImpl implements UserService {
     public UserResponse createUser(CreateUserRequest user) {
         return userMapper.userToUserResponse(userRepository
             .save(userMapper.createUserRequestToUser(user)));
+    }
+
+    @Override
+    public void createUsers(List<CreateUserRequest> users) {
+        userRepository.saveAll(users.stream()
+                .map(userMapper::createUserRequestToUser).collect(Collectors.toList()));
     }
 
     @Override
@@ -68,6 +76,18 @@ public class UserServiceImpl implements UserService {
             usersFuture.add(userFuture);
         }
         return usersFuture.stream().map(CompletableFuture::join).map(userMapper::userToUserResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserResponse> getAll() {
+        return userRepository.findAll().stream().map(userMapper::userToUserResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserResponse> getAllMongoUsers() {
+        return mongoUserRepository.findAll().stream().map(userMapper::mongoUserToUserResponse).collect(Collectors.toList());
     }
 
     private User setUserAccounts(User user){

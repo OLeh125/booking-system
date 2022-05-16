@@ -1,0 +1,111 @@
+TO ASK//////////////Що це таке набір констрейнтів для чого?
+
+----------------ACID-----------------------------
+
+Atomicity — Атомарность
+Атомарність гарантує що, кожна транзакція відбудеться повність або взагалі не відбужеться
+(не розділиме як атом)
+
+Consistency — Согласованность
+eventual consistency
+Що дані до початку і після закінчення транзакціїї мають бути в нормальному стані
+наприклад баланс не може бути відємним умовно або юзер не може бути старший 150
+Більше лежить на додатку логіка. Виконується за рахунок констрейнтів
+
+Isolation — Изолированность
+У транзакцій можуть бути різні рівні ізоляції
+
+1.TRANSACTION_READ_UNCOMMITED
+ні з чим не бориться
+
+
+2. TRANSACTION_READ_COMMITED дефолт для майже всіх баз
+бориться з Dirty read
+---Dirty read
+T1 update user name наприклад а,
+T2 в той час зчитає users і після цього T1 ролбекнитьтся
+тоді T2 буде мати не валідні дані
+
+3. TRANSACTION_REPEATABLE_READ дефолт для майже всіх баз
+бориться з Non repeatable read
+
+---Non repeatable read
+T1 селект з бази,
+T2 апдейт в базу
+T1 селект з бази
+Данні будуть розрізнятись
+
+
+
+3. TRANSACTION_SERIALASIBLE дефолт для майже всіх баз
+бориться з Phantom read
+
+---Phantom read
+T1 селект з бази,
+T2 інсерт в базу
+T1 селект з бази
+Данні будуть розрізнятись
+
+Durability — Надёжность
+Що зміни які зроблені завершеною транзакцією мають бути збережені
+після відновлення роботи системи.
+
+--------------PROPAGATION level------------
+- REQUIRED -default
+Spring checks if there is an active transaction, and if nothing exists, it creates a new one.
+Otherwise, the business logic appends to the currently active transaction
+TO ASK \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\Наскільки розумію то можна переписати реад онлі
+
+
+ser rep get all
+
+
+- SUPPORTS
+first checks if an active transaction exists. If a transaction exists, then the existing transaction will be used.
+If there isn't a transaction, it is executed non-transactional
+
+- MANDATORY
+ if there is an active transaction, then it will be used. If there isn't an active transaction,
+ then Spring throws an exception
+
+- NEVER
+Spring throws an exception if there's an active transaction
+
+- NOT_SUPPORTED
+If a current transaction exists, first Spring suspends it,
+and then the business logic is executed without a transaction
+
+- REQUIRES_NEW
+When the propagation is REQUIRES_NEW, Spring suspends the current transaction if it exists,
+and then creates a new one
+
+- NESTED propagation, Spring checks if a transaction exists, and if so, it marks a save point.
+This means that if our business logic execution throws an exception, then the transaction rollbacks to this save point.
+If there's no active transaction, it works like REQUIRED
+
+-----------------CAP-------------------------
+
+TO ASK//////////////////////////////////////////////Розподілені системи в якому значенні? Типу Бази і її репліки чи як?
+
+Consistency - согласованность. Каждое чтение даст вам самую последнюю запись.
+
+Availability -
+доступность. Каждый узел (не упавший) всегда успешно выполняет запросы (на чтение и запись).
+однако без гарантии, что ответы всех узлов системы совпадают;
+
+Portion tolerance -
+расщепление распределённой системы на несколько изолированных секций
+не приводит к некорректности отклика от каждой из секций.
+
+За ціїю теоремою можна отримати тільки 2 з 3
+
+--------------------BASE--------------------
+
+Basic Availability. Система отвечает на любой запрос, но этот ответ может быть содержать ошибку или несогласованные данные.
+
+Soft-state. Состояние системы может меняться со временем из-за изменений конечной согласованности.y
+
+Eventual consistency (конечная согласованность).
+Система, в конечном итоге, станет согласованной.
+Она будет продолжать принимать данные и не будет проверять каждую транзакцию на согласованность.
+

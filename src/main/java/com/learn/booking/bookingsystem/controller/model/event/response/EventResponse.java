@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class EventResponse {
 
-    private Integer id;
+    private String id;
     private UUID uuid;
     private String place;
     private LocalDateTime date;

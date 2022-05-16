@@ -11,6 +11,8 @@ public interface UserService {
 
     UserResponse createUser(CreateUserRequest user);
 
+    void createUsers(List<CreateUserRequest> users);
+
     UserResponse updateUser(UpdateUserRequest user, UUID userUuid);
 
     void deleteUser(UUID uuid);
@@ -19,4 +21,7 @@ public interface UserService {
 
     List<UserResponse> getUsersWithAccounts(List<UUID> uuid);
 
+    List<UserResponse> getAll();
+
+    List<UserResponse> getAllMongoUsers();
 }

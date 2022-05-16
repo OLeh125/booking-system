@@ -11,7 +11,7 @@ public class EventMapper {
 
     public EventResponse eventToEventResponse(Event event){
         return EventResponse.builder()
-            .id(event.getId())
+            .id(event.getId().toString())
             .uuid(event.getUuid())
             .place(event.getPlace())
             .date(event.getDate())
@@ -33,4 +33,27 @@ public class EventMapper {
             .build();
     }
 
+    public EventResponse mongoEventToEventResponse(com.learn.booking.bookingsystem.db.mongo.Event event) {
+        return EventResponse.builder()
+            .id(event.getId())
+            .uuid(event.getUuid())
+            .place(event.getPlace())
+            .date(event.getDate())
+            .description(event.getDescription())
+            .status(event.getStatus())
+            .ticketsNumber(event.getTicketsNumber())
+            .build();
+    }
+
+    public com.learn.booking.bookingsystem.db.mongo.Event eventResponseToMongoEvent(EventResponse event) {
+        return com.learn.booking.bookingsystem.db.mongo.Event.builder()
+
+            .uuid(event.getUuid())
+            .place(event.getPlace())
+            .date(event.getDate())
+            .description(event.getDescription())
+            .status(event.getStatus())
+            .ticketsNumber(event.getTicketsNumber())
+            .build();
+    }
 }

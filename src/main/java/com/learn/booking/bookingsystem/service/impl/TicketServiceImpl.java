@@ -73,6 +73,11 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public List<TicketResponse> getAll() {
+        return ticketRepository.findAll().stream().map(ticketMapper::ticketToTicketResponse).collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<TicketResponse> getTickets(List<UUID> uuids) {
         return ticketRepository.getAllByUuid(uuids).stream()

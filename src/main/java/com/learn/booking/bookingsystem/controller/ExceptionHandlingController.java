@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.learn.booking.bookingsystem.controller.model.Error;
 
 @Slf4j
-@RestControllerAdvice
+//@RestControllerAdvice
 public class ExceptionHandlingController {
 
     @ExceptionHandler(Exception.class)

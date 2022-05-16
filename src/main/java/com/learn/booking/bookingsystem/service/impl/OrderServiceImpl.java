@@ -71,4 +71,9 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllByUuid(uuids).stream()
             .map(orderMapper::orderToOrderResponse).collect(Collectors.toList());
     }
+
+    @Override
+    public List<OrderResponse> getAll() {
+        return orderRepository.findAll().stream().map(orderMapper::orderToOrderResponse).collect(Collectors.toList());
+    }
 }

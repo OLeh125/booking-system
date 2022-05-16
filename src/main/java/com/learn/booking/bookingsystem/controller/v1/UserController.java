@@ -1,8 +1,10 @@
 package com.learn.booking.bookingsystem.controller.v1;
 
+import com.learn.booking.bookingsystem.aop.Timed;
 import com.learn.booking.bookingsystem.controller.model.users.request.CreateUserRequest;
 import com.learn.booking.bookingsystem.controller.model.users.request.UpdateUserRequest;
 import com.learn.booking.bookingsystem.controller.model.users.response.UserResponse;
+import com.learn.booking.bookingsystem.service.UserService;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -27,37 +29,53 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final com.learn.booking.bookingsystem.service.UserService UserService;
+    private final UserService userService;
 
     @GetMapping("/{userUuid}")
     @PreAuthorize("hasAuthority('read')")
-    public ResponseEntity<UserResponse> getUser(@PathVariable UUID userUuid){
-        return new ResponseEntity<>(UserService.getUser(userUuid), HttpStatus.OK);
+    public ResponseEntity<UserResponse> getUser(@PathVariable UUID userUuid) {
+        return new ResponseEntity<>(userService.getUser(userUuid), HttpStatus.OK);
     }
 
     @GetMapping()
     @PreAuthorize("hasAuthority('read')")
-    public ResponseEntity<List<UserResponse>> getUsers(@RequestParam List<UUID> uuids){
-        return new ResponseEntity<>(UserService.getUsersWithAccounts(uuids), HttpStatus.OK);
+    public ResponseEntity<List<UserResponse>> getUsers(@RequestParam List<UUID> uuids) {
+        return new ResponseEntity<>(userService.getUsersWithAccounts(uuids), HttpStatus.OK);
+    }
+
+    @GetMapping("/postgres")
+    @PreAuthorize("hasAuthority('read')")
+    @Timed(msg = "get all users postgres")
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/mongo")
+    @PreAuthorize("hasAuthority('read')")
+    @Timed(msg = "get all users mongo")
+    public ResponseEntity<List<UserResponse>> getAllMongoUsers() {
+        return new ResponseEntity<>(userService.getAllMongoUsers(), HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('write')")
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest userRequest){
-        return new ResponseEntity<>(UserService.createUser(userRequest), HttpStatus.CREATED);
+    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest userRequest) {
+        return new ResponseEntity<>(userService.createUser(userRequest), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{userUuid}")
     @PreAuthorize("hasAuthority('write')")
-    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserRequest userRequest, @PathVariable UUID userUuid){
-        return new ResponseEntity<>(UserService.updateUser(userRequest, userUuid), HttpStatus.OK);
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserRequest userRequest,
+        @PathVariable UUID userUuid) {
+        return new ResponseEntity<>(userService.updateUser(userRequest, userUuid), HttpStatus.OK);
     }
 
     @DeleteMapping("/{userUuid}")
     @PreAuthorize("hasAuthority('write')")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID userUuid){
-        UserService.deleteUser(userUuid);
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID userUuid) {
+        userService.deleteUser(userUuid);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 
 }

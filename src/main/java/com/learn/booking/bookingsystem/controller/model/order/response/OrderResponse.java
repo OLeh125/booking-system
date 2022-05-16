@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class OrderResponse {
 
-    private Integer id;
+    private String id;
     private UUID uuid;
     private LocalDateTime createdAt;
     private UserResponse client;

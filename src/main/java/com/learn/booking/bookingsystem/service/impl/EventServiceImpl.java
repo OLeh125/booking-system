@@ -50,6 +50,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<EventResponse> getAll() {
+        return eventRepository.findAll().stream().map(eventMapper::eventToEventResponse).collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<EventResponse> getEvents(List<UUID> uuid) {
         return eventRepository.findAllByUuid(uuid).stream()

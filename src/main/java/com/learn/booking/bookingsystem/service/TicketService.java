@@ -19,6 +19,8 @@ public interface TicketService {
 
     TicketResponse getTicket(UUID uuid);
 
+    List<TicketResponse> getAll();
+
     List<TicketResponse> getTickets(List<UUID> uuid);
 
 }

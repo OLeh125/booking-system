@@ -16,6 +16,8 @@ public interface EventService {
 
     EventResponse getEvent(UUID uuid);
 
+    List<EventResponse> getAll();
+
     List<EventResponse> getEvents(List<UUID> uuid);
 
     void bookTickets(Integer number, UUID eventUuid);

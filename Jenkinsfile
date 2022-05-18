@@ -5,16 +5,14 @@ pipeline {
             args '-v /root/.m2:/root/.m2'
         }
     }
-
-    stage('Initialize'){
-            def dockerHome = tool 'myDocker'
-            env.PATH = "${dockerHome}/bin:${env.PATH}"
-            steps {
-
-                  }
-        }
-
     stages {
+        stage('Initialize'){
+                def dockerHome = tool 'myDocker'
+                env.PATH = "${dockerHome}/bin:${env.PATH}"
+                steps {
+
+                      }
+            }
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'

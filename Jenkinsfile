@@ -8,7 +8,12 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'mvn clean package'
+                if (params.BUILD_ON == 'gradle') {
+                                    echo 'Hello from gradle'
+                                    sh 'mvn clean package'
+                                } else {
+                                    sh 'mvn clean package -DskipTests'
+                                }
             }
         }
     }

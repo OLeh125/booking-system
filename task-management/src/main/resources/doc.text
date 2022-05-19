@@ -50,7 +50,7 @@ Durability — Надёжность
 Що зміни які зроблені завершеною транзакцією мають бути збережені
 після відновлення роботи системи.
 
---------------PROPAGATION level-------------
+--------------PROPAGATION level--------------
 - REQUIRED -default
 Spring checks if there is an active transaction, and if nothing exists, it creates a new one.
 Otherwise, the business logic appends to the currently active transaction
